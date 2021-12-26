@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import './index.css';
+
 import Navbar from './comps/Navbar';
 import Products from './comps/Products';
 import Home from './comps/Home';
@@ -14,10 +14,46 @@ function App() {
   let componentMounted = true;
 
  const addToCart = (product) => {
+   
     const newArray = [...cart]
-    newArray.push(product)
+   const index = newArray.findIndex((item) => {
+      return item.product.id === product.id
+
+  })
+  
+    if(index > -1){
+      newArray[index].count++
+    }
+    else{
+      newArray.push({product: product, count: 1})
+    }
+    
     setCart(newArray)
+    saveToLocalStorage(newArray)
   }
+
+  const removeItem = (id) => {
+    const newCart = [...cart]
+  const index = newCart.findIndex((item) => {
+    return item.product.id === id
+
+})
+
+  if(newCart[index].count > 1){
+    newCart[index].count--
+  }
+  else{
+    newCart.splice(index, 1)
+  }
+
+  setCart(newCart)
+  saveToLocalStorage(newCart)
+}
+    
+
+const saveToLocalStorage = (cart) => {
+  localStorage.setItem("cart-item", JSON.stringify(cart))
+}
 
 useEffect(() =>{
   const getProducts = async () =>{
@@ -33,7 +69,11 @@ useEffect(() =>{
           componentMounted = false
       }
   }
-
+  const JSONStringCart = localStorage.getItem("cart-item")
+  if(JSONStringCart){
+    const temporaryCart = JSON.parse(JSONStringCart) 
+    setCart(temporaryCart)
+  }
   getProducts()
 }, []);
 
@@ -60,7 +100,7 @@ useEffect(() =>{
           <Categories data={data} addToCart={addToCart} />
         </Route>
         <Route exact path={"/cart"}>
-          <Cart cart={cart} />
+          <Cart cart={cart} removeItem={removeItem} />
         </Route>
      
         
