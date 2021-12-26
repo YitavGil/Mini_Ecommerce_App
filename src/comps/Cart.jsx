@@ -1,15 +1,17 @@
 import React from "react";
 
 
-const Cart = (props) => {
+const Cart = ({cart, removeItem}) => {
 return(
-props.cart.map((item) => {
+cart.map((item) => {
     return(
-        <div className="product-container">
+        <div className="cart-container">
                
-                <img className="img" src={item.image} />
-                <h5>{item.title}</h5>
-                <p>${item.price}</p>
+                <img className="img" src={item.product.image} />
+                <h5>{item.product.title}</h5>
+                <p>${item.product.price * item.count}</p>
+                <h1>{item.count}</h1>
+                <button className="remove-btn" onClick={() => removeItem(item.product.id)}>Remove</button>
 
                 </div>
     )

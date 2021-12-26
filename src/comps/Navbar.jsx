@@ -15,7 +15,7 @@ const Navbar = (props) => {
                 <ul className="nav-links">
                     <li><NavLink to="/products">Shop</NavLink></li>
                     <li><NavLink to="/categories">Categories</NavLink></li>
-                    <li><NavLink to="/cart"><FaShoppingCart className="cart-icon" />Cart&nbsp;  <span>({props.itemCart})</span></NavLink></li>
+                    <li className="cart-link"><NavLink to="/cart"><FaShoppingCart className="cart-icon" />Cart&nbsp;  <span>({props.itemCart})</span></NavLink></li>
                 </ul>
             </div>
 
